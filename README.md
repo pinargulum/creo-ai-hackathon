@@ -26,7 +26,7 @@ CREO-AI is a lightweight AI Agent for the Commercial Real Estate (CRE) sector. I
 
 ## 📁 Project Structure
 
-📦 creo-ai
+📦 creo-ai-hackathon
 ├── main.py # FastAPI app entrypoint
 ├── upload.py # Handles file upload & parsing
 ├── openai_service.py # Interacts with OpenAI API
@@ -49,7 +49,7 @@ CREO-AI is a lightweight AI Agent for the Commercial Real Estate (CRE) sector. I
 
 ```bash
 git clone https://github.com/pinargulum/creo-ai-hackathon.git
-cd creo-ai
+cd creo-ai-hackathon
 pip install -r requirements.txt
 
 

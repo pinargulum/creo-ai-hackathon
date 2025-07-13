@@ -26,3 +26,6 @@ class UserUpdate(BaseModel):
     email: str
    
 
+class ScheduleRequest(BaseModel):
+    date: str
+    time: str

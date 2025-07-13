@@ -30,5 +30,10 @@ def chat_endpoint(request: ChatRequest):
     }
     conversation_collection.insert_one(conversation)
     return {"reply": result["reply"], "category": result["category"]}
+
+@router.post("/reset")
+def reset_conversation(request: ChatRequest):
+    result = conversation_collection.delete_many({"user_id": request.user_id})
+    return {"message": f"{result.deleted_count} conversation deleted {request.user_id}"}
    
 __all__ = ["router"]  
