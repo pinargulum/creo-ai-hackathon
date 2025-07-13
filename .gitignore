@@ -1,7 +1,8 @@
-.env
+
 # Env and secrets
-.env
+
 
 # Python cache files
 __pycache__/
 *.py[cod]
+--__pycache__

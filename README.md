@@ -1,80 +1,141 @@
-# 🏢 CREO-AI: AI-Powered Real Estate Assistant
+# CREO-AI: Commercial Real Estate Optimizer with AI Agents 🏢🤖
 
-CREO-AI is a lightweight AI Agent for the Commercial Real Estate (CRE) sector. It helps brokers, landlords, and tenants with real-time property discovery, lease support, and intelligent conversation — powered by OpenAI and FastAPI.
+CREO-AI is a smart backend system powered by FastAPI, OpenAI, and MongoDB, designed to streamline operations for the Commercial Real Estate (CRE) industry. It supports landlords, brokers, and tenants with intelligent document ingestion, question-answering, lead tracking, and visit scheduling—all via APIs.
 
 ---
 
 ## 🚀 Features
 
-- 🔍 **Smart Q&A over internal data:** Upload `.csv` documents and let the AI answer user queries based on real property listings.
-- 🧠 **LLM-backed reasoning:** Uses OpenAI GPT models to process natural language and generate database filters.
-- 📂 **MongoDB Integration:** Documents and conversation history are stored in a structured MongoDB schema.
-- 💬 **Conversation Tracker (CRM-style):** Keeps track of user conversations by user_id, allows reset and query history.
-- ✍️ **Categorization & Optional Tagging:** AI classifies user intent for routing or segmentation purposes.
-- 📌 **RESTful API Endpoints:** FastAPI backend with modular endpoints for document upload, chat, user creation and conversation history.
+- ✨ **RAG-Based Chatbot**: Ask questions about properties, leases, or terms. Answers are generated using real-time document data via Retrieval-Augmented Generation (RAG).
+- 🧠 **CRM Module**: Logs and retrieves user data, chat history, lead info, and interactions.
+- 📄 **Document Upload & Indexing**: Upload property PDFs and make their data searchable for AI.
+- 🕓 **Schedule a Visit**: Simulated calendar integration to book visits based on availability.
+- 🧪 **JSON API Responses**: All endpoints return structured, standardized JSON data.
 
 ---
 
-## 🧩 Tech Stack
+## 📦 Tech Stack
 
-- **Backend:** FastAPI (Python)
-- **Database:** MongoDB
-- **LLM:** OpenAI GPT (via API)
-- **Testing Tool:** Postman
-
----
-
-## 📁 Project Structure
-
-📦 creo-ai-hackathon
-├── main.py # FastAPI app entrypoint
-├── upload.py # Handles file upload & parsing
-├── openai_service.py # Interacts with OpenAI API
-├── chat.py # Handles chat + context logic
-├── crm/
-│ ├── create_user.py
-│ ├── update_user.py
-│ ├── conversations.py
-├── models/ # Pydantic schemas
-├── .env # API keys and DB URI (ignored)
-├── requirements.txt
-└── README.md 
-
+- **Backend**: FastAPI (Python)
+- **Database**: MongoDB Atlas (NoSQL)
+- **AI**: OpenAI GPT API
+- **Data Layer**: PyMongo
+- **Docs & Scheduling**: Custom RAG + Calendar Simulation
 
 ---
 
-## 📦 Setup & Installation
+## 📁 Folder Structure
 
-1. **Clone the Repository**
+```
+creo-ai/
+│
+├── models/               # MongoDB schemas
+├── routes/               # All API routes
+│   ├── chat.py           # Chat endpoint
+│   ├── upload.py         # Upload docs
+│   ├── crm.py            # CRM info
+│   └── schedule_visit.py # Schedule endpoint
+│
+├── services/
+│   └── openai_service.py # RAG + Chat logic
+│
+├── .env                  # API keys (placeholder only!)
+├── main.py               # Entry point
+├── README.md             # This file
+├── api_contracts.pdf     # Input/Output samples for APIs
+└── requirements.txt      # Dependencies
+```
+
+---
+
+## 🔑 Environment Setup
+
+---
+
+## 🧠 How the AI Works
+
+- Uploaded documents are indexed into MongoDB.
+- The chatbot (`/chat`) queries OpenAI with context from relevant documents.
+- Conversation logs are saved per user ID.
+- Responses are enriched using metadata like property address, rent, size, etc.
+
+---
+
+## 📅 Schedule Visit Endpoint
+
+Simulates calendar availability and allows visit scheduling.
+
+### Endpoint
+
+```
+POST /schedule_visit
+```
+
+### Request Body
+
+```json
+{
+  "date": "2025-07-14",
+  "time": "14:30"
+}
+```
+
+### Success Response
+
+```json
+{
+  "status": "confirmed",
+  "message": "Visit scheduled for 2025-07-14 at 14:30"
+}
+```
+
+### Failure Response
+
+```json
+{
+  "status": "unavailable",
+  "suggestions": ["15:00", "15:30", "16:00"]
+}
+```
+
+---
+
+## 🧾 Sample Conversation Log
+
+```json
+{
+  "user_id": "xyz123",
+  "user_message": "What is the rent for the property on Pine Street?",
+  "ai_response": "The rent for 21 Pine Street is $5,200/month."
+}
+```
+
+---
+
+## 🛠️ How to Run Locally
 
 ```bash
 git clone https://github.com/pinargulum/creo-ai-hackathon.git
 cd creo-ai-hackathon
 pip install -r requirements.txt
+uvicorn main:app --reload
+```
 
+Access API at: `http://127.0.0.1:8000/docs`
 
-| Method | Endpoint                            | Description                |
-| ------ | ----------------------------------- | -------------------------- |
-| POST   | `/upload_docs`                      | Upload CSV file to MongoDB |
-| POST   | `/chat/{user_id}`                   | Ask AI a question          |
-| POST   | `/crm/create_user`                  | Register new user          |
-| PUT    | `/crm/update_user/{user_id}`        | Update user details        |
-| GET    | `/crm/conversations/{user_id}`      | Fetch conversation history |
-| POST   | `/crm/reset_conversation/{user_id}` | Clear past chat context    |
+---
 
+## 📄 API Contract PDF
 
-Sample Usage
-POST /chat/123456
+You can find the input/output schemas and sample API usage in PDF file. 
+📎 
 
-{
-  "message": "Which office spaces are available in Manhattan over 10,000 SF?"
-}
+---
 
-🧠 Prompt Engineering Insight
-We designed the prompt to:
+## 👥 Authors & Credits
 
-Accept user message as the main question
+Hackathon Project by Pinar Gulum  
+OpenAI API | MongoDB Atlas | FastAPI | 
 
-Dynamically construct MongoDB filter queries
+---
 
-Respond only using available documents (not general knowledge)
